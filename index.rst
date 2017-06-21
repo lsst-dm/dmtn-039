@@ -17,10 +17,10 @@ are in the LSST Data Management Science Pipelines Design (LDM-151, [swi17]_) and
 the LSST Data Products Definition Document (DPDD, [jur16]_). Briefly
 summarized below and in :ref:`Figure 1<fig-nightly-proc>`, the first portion of these steps are:
 
-1. Instrument Signature Removal (ISR), which must include crosstalk correction, bad pixel masking, bias subtraction, and flat field division,
-2. Point Source Function (PSF) and background characterization,
+1. Instrument Signature Removal (ISR), which includes crosstalk and linearity corrections, bad pixel masking, bias subtraction, and flat field division,
+2. Point Source Function (PSF) and background characterization, which includes source detection and measurement,
 3. Photometric and World Coordinate System (WCS) calibration, and
-4. Image Differencing with an appropriate template to create Difference Image Analysis (DIA) source catalogs.
+4. Image Differencing with an appropriate template (which may need constructing) to create Difference Image Analysis (DIA) source catalogs.
 
 .. figure:: /_static/nightly_processing_1.png
    :name: fig-nightly-proc
@@ -98,10 +98,10 @@ Tutorial
 
 The prerequisites for running the Prototype Pipeline on a dataset of images (\*.fits or \*.fits.fz) are:
 
-- The LSST Stack with the standard modules setup, as well as ``obs_decam``
-- A directory containing some raw DECam images
-- A directory containing DECam MasterCal biases and flats corresponding to the raw images
-- A directory containing DECam defect images, one for each CCD
+- The LSST Stack with the standard modules (``setup lsst_apps``), as well as ``obs_decam`` (``setup obs_decam``)
+- A directory containing some raw DECam images, available from the `NOAO Science Archive <http://archive.noao.edu/search/query>`_
+- A directory containing DECam MasterCal biases and flats corresponding to the raw images, also available from the the `NOAO Science Archive <http://archive.noao.edu/search/query>`_
+- A directory containing DECam defect images, one for each CCD, available on the ``lsst-dev`` server at ``/datasets/decam/calib/bpmDes/2014-12-05/``
 - A set of astrometric reference catalogs (example below)
 - A personal working copy of the `decam_process <https://github.com/lsst-dm/decam_hits/blob/master/decam_process.py>`_ script
 
@@ -123,6 +123,7 @@ In general, ``repo`` refers to where ingested images will live, ``calibrepo``
 refers to where ingested calibration products (flats and biases) will live, ``processedrepo`` refers to where "calexp"
 images will live (i.e., those that have been processed with ``processCcd`` including steps 1 through 3 in :ref:`Overview <Overview>`),
 and ``diffimrepo`` refers to where difference images and DIA Sources (catalogs) will ultimately live.
+These should each be different directories, and it's recommended to have them all reside in the same top-level directory.
 Visit numbers can be found in image headers or retrieved from the registry database created in ``repo`` during image ingestion 
 (visit numbers are not used during ingestion, so you may set them after this step). The first visit you specify
 in the list will be used as the template.
@@ -136,6 +137,7 @@ Pan-STARRS, and SDSS catalogs by
    mkdir repo
    ln -s /datasets/refcats/htm/htm_baseline repo/ref_cats
 
+Note that the ``repo`` directory is called ``ingested_15A38`` in the default values given above.
 If you wish to use an astrometric reference catalog other than Pan-STARRS, you must update the code in the ``doProcessCcd``
 function of ``decam_process.py`` accordingly. It is not necessary to explicitly ``mkdir`` the other repositories.
 
@@ -157,7 +159,7 @@ Once you are ready, run the following:
 
 .. prompt:: bash
 
-   python decam_process.py ingestCalibs -f path/to/calibrations/
+   python decam_process.py ingestCalibs -f path/to/biases/and/flats/
    cd calibrepo
    ingestCalibs.py ../repo --calib . --calibType defect --validity 999 ../path/to/defects/
    cd -
@@ -187,7 +189,7 @@ on the ``lsst-dev`` server at ``/project/mrawls/prototype_ap/diffim_15A38_g/deep
 A small thumbnail preview of the difference images is shown in :ref:`Figure 3<fig-diffim>`.
 
 Future work will extend this to more visits, perhaps using the 2014 visits as templates and the 2015
-visits as science. This Prototype Pipeline will be used as a core component of the AP Minimum Viable System
+visits as science. This Prototype Pipeline will be used as a core component of the `AP Minimum Viable System <https://confluence.lsstcorp.org/display/~ebellm/AP+Minimum+Viable+System>`_
 with a goal of verifying the different components of LSST image processing as we incrementally build toward
 a fully functional AP system.
 
