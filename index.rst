@@ -153,16 +153,13 @@ Once you are ready, run the following:
 
 .. prompt:: bash
    
-   python decam_process.py ingest -f path/to/rawimages/
+   python decam_process.py ingest -f path/to/rawimages
    
-2. Ingest the calibration products (defects and fringes, if present, must be done manually)
+2. Ingest the calibration products (biases, flats, and defects)
 
 .. prompt:: bash
 
-   python decam_process.py ingestCalibs -f path/to/biases/and/flats/
-   cd calibrepo
-   ingestCalibs.py ../repo --calib . --calibType defect --validity 999 ../path/to/defects/
-   cd -
+   python decam_process.py ingestCalibs -f path/to/biasesandflats -d path/to/defects
 
 3. Run ``processCcd`` to detect PSF sources, characterize the background, and perform photometric and astrometric calibrations.
 The end result of this step is calibrated exposures ("calexp" images). *If you turned off photometric and astrometric calibrations
