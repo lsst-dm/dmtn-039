@@ -13,8 +13,8 @@ Overview
 
 Ultimately, LSST Alert Production (AP) will need to perform all steps of the Level 1
 pipeline automatically on each new raw image from the telescope. Details
-are in the LSST Data Management Science Pipelines Design (LDM-151, [swi17]_) and 
-the LSST Data Products Definition Document (DPDD, [jur16]_). Briefly
+are in the LSST Data Management Science Pipelines Design  (LDM-151 :cite:`LDM-151`) and 
+the LSST Data Products Definition Document (DPDD :cite:`LSE-163`). Briefly
 summarized below and in :ref:`Figure 1<fig-nightly-proc>`, the first portion of these steps are:
 
 1. Instrument Signature Removal (ISR), which includes crosstalk and linearity corrections, bad pixel masking, bias subtraction, and flat field division,
@@ -27,7 +27,7 @@ summarized below and in :ref:`Figure 1<fig-nightly-proc>`, the first portion of 
    :alt: First portion of the LDM-151 Nightly Overview flowchart, from ISR to Image Differencing
    
    The first portion of the Nightly Processing Pipeline overview, from Figure 1 of 
-   LDM-151 [swi17]_. This encompasses all of "Single Frame Processing" and part of "Alert Detection."
+   :cite:`LDM-151`. This encompasses all of "Single Frame Processing" and part of "Alert Detection."
 
 A number of packages in the LSST Software Stack have been developed to perform
 portions of one or more of these four tasks, but they are not yet linked together
@@ -41,7 +41,7 @@ each of these steps and verify that the output is what we expect.
 Dataset
 =======
 
-We use images from the High Cadence Transient Survey (HiTS, [for16]_), a three-year survey 
+We use images from the High Cadence Transient Survey (HiTS) :cite:`for16`, a three-year survey 
 from 2013--2015 which used the `Dark Energy Camera (DECam) <http://www.ctio.noao.edu/noao/content/DECam-What>`_
 on the 4 m Blanco telescope at Cerro Tololo Interamerican Observatory (CTIO).
 The primary science goal of this survey is to detect and follow up optical transients
@@ -52,7 +52,7 @@ The distribution of the HiTS survey fields in the sky is shown in :ref:`Figure 2
    :name: fig-hits
    :alt: Distribution of the HiTS survey fields in the sky, color-coded by year
    
-   Spatial distribution of the fields observed in the 2013--2015 HiTS campaign (Figure 4 from [for16]_).
+   Spatial distribution of the fields observed in the 2013--2015 HiTS campaign (Figure 4 from :cite:`for16`).
    The fields selected for this dataset are three of the pink ones, which indicate they were visited in both 2014 and 2015.
 
 We select HiTS fields ``Blind15A_38``, ``Blind15A_39``, and ``Blind15A_40``, which
@@ -199,13 +199,12 @@ a fully functional AP system.
    a portion of CCD 31 is also not working. The other CCDs all perform as expected.
 
 
+.. _References:
 
-.. [for16] `Förster et al. 2016, ApJ, 832, 155 <http://adsabs.harvard.edu/cgi-bin/nph-data_query?bibcode=2016ApJ...832..155F>`_.
-   *The High Cadence Transient Survey (HITS). I. Survey Design and Supernova Shock Breakout Constraints.*
+References
+==========
 
-.. [jur16] `Jurić et al. 2016, LSST Document LSE-163 <https://docushare.lsstcorp.org/docushare/dsweb/Get/LSE-163>`_.
-   *Large Synoptic Survey Telescope Data Products Definition Document.*
-
-.. [swi17] `Swinbank et al. 2017, LSST Document LDM-151 <https://ldm-151.lsst.io>`_.
-   *Large Synoptic Survey Telescope Data Management Science Pipelines Design.*
+.. bibliography:: local.bib
+   :encoding: latex+latin
+   :style: lsst_aa
 
