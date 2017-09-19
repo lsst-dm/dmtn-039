@@ -35,6 +35,10 @@ in an automated way. This Prototype AP Pipeline is the first step toward the goa
 of an automatic Level 1 Pipeline that can process a set of raw images through 
 each of these steps and verify that the output is what we expect.
 
+To achieve this, there are two main python modules under development: 
+`ap_pipe <https://github.com/lsst-dm/ap_pipe>`_ and `ap_verify <https://github.com/lsst-dm/ap_verify>`_.
+WRITE MORE WORDS HERE.
+
 
 .. _Dataset:
 
@@ -54,16 +58,21 @@ The distribution of the HiTS survey fields in the sky is shown in :ref:`Figure 2
    
    Spatial distribution of the fields observed in the 2013--2015 HiTS campaign (Figure 4 from :cite:`for16`).
    The fields selected for this dataset are three of the pink ones, which indicate they were visited in both 2014 and 2015.
+   Specifically, they are the pair of partially-overlapping pink fields near the bottom center of the 2014 and 2015
+   field region and the upper-right-most pink field.
 
-We select HiTS fields ``Blind15A_38``, ``Blind15A_39``, and ``Blind15A_40``, which
-are repeat observations of the same region of sky as ``Blind14A_07``, ``Blind14A_08``, and ``Blind14A_10``
-fields, respectively. They are all centered near an RA of 10:15:00 hr and Declination of --04:00:00 deg.
-Each field has 34--36 individual visits over about a month, and each DECam image consists of 62 CCDs.
-Most of the visits are in the *g*-band, some are in the *r*-band, and a few are in *z* or *i*.
+We select HiTS fields ``Blind15A_26``, ``Blind15A_40``, and ``Blind15A_42``, which
+are repeat observations of the same region of sky as ``Blind14A_04``, ``Blind14A_10``, and ``Blind14A_09``
+fields, respectively. Each field has 34--36 individual visits over about a month, and each DECam image 
+consists of 62 CCDs (however, two of these are non-functional).
+Most of the visits are in the *g*-band, some are in the *r*-band, and a few are in *i*.
 
-For the purposes of this prototype pipeline, we consider two *g*-band visits in ``Blind15A_38`` only.
-However, the rest of the visits in fields ``15A_38``--``15A_40`` have been ingested (see details in :ref:`Method <Method>`)
-and are ready for the next steps of processing if desired.
+All of these data are in the git-lfs repo `ap_verify_hits2015 <https://github.com/lsst/ap_verify_hits2015>`_
+in raw format, along with the corresponding DECam Master Calibration files and camera defect files.
+The data also exist on the ``lsst-dev`` server at ``/datasets/decam/_internal/raw/hits`` with the
+calibration files at ``/dataset/decam/_internal/calib/cpHits`` and the camera defects at
+``/dataset/decam/_internal/calib/bpmDes``. The raw images and calibration files were originally obtained 
+from the `NOAO Science Archive <http://archive.noao.edu/search/query>`_ by searching for PI Förster.
 
 
 .. _Method:
@@ -71,19 +80,14 @@ and are ready for the next steps of processing if desired.
 Method
 ======
 
-To begin, we obtained the dataset by downloading raw images and corresponding master calibration files 
-from the `NOAO Science Archive <http://archive.noao.edu/search/query>`_. The HiTS survey data 
-may be selected by searching for PI Förster. Additionally, the latest set of DECam defects (bad
-pixel masks) were obtained from the ``lsst-dev`` server at ``/datasets/decam/calib/bpmDes/2014-12-05/``,
-and a set of `Pan-STARRS <https://panstarrs.stsci.edu>`_ astrometric reference catalogs were obtained from 
-the ``lsst-dev`` server at ``/datasets/refcats/htm/htm_baseline``.
-
-Next, we ran four main processing steps with the LSST Stack on the data:
+We ran four main processing steps with the LSST Stack on the data:
 
 1. ``ingestImagesDecam.py``, from the ``obs_decam`` package but drawing heavily on ``pipe_tasks``,
 2. ``ingestCalibs.py``, from the ``pipe_tasks`` package,
 3. ``processCcd.py``, from the ``pipe_tasks`` package, and
 4. ``imageDifference.py``, also from the ``pipe_tasks`` package.
+
+RESUME EDITING DOCUMENT HERE; THE REMAINDER OF THE METHOD/TUTORIAL IS OUT OF DATE.
 
 To streamline this process, we wrote a python script called ``decam_process.py`` to handle each step.
 It is `available on GitHub <https://github.com/lsst-dm/decam_hits/blob/master/decam_process.py>`_.
