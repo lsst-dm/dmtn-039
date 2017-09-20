@@ -90,15 +90,18 @@ with the LSST Stack on a portion of the :ref:`Dataset <Dataset>` described above
 
 The prerequisites for running ``ap_pipe`` are:
 
-- The LSST Stack with the standard modules
-- Additionally, the ``obs_decam`` and ``ap_pipe`` modules
+- The `LSST Science Pipelines <https://pipelines.lsst.io/install/lsstsw.html>`_ 
+  stack with the ``lsst_apps`` modules (a subset of ``lsst_distrib``)
+- The ``obs_decam`` and ``ap_pipe`` modules
 - A clone of the ``ap_verify_hits2015`` dataset
+
+You may set all of this up as follows:
 
 .. prompt:: bash
 
    setup lsst_apps
    git clone https://github.com/lsst/obs_decam.git
-   git clone https://github.com/lsst/ap_pipe.git
+   git clone https://github.com/lsst-dm/ap_pipe.git
    setup -k -r obs_decam
    setup -k -r ap_pipe
    git clone https://github.com/lsst/ap_verify_hits2015.git
@@ -113,14 +116,17 @@ a valid visit and ccdnum dataId string with the ``-i`` flag.
 
 .. note::
 
-    At present (`DM-11390 <https://jira.lsstcorp.org/browse/DM-11390>`_), the template used for difference imaging is hard-wired to visit=410929 and ccdnum=25.
-    This is a single CCD only of one of the ``Blind15A_40`` visits. If you would like to use a different template,
-    you must manually set this in the source code
+    At present (`DM-11390 <https://jira.lsstcorp.org/browse/DM-11390>`_), the template used for 
+    difference imaging is hard-wired to visit 410929 and ccdnum 25.
+    This is a single CCD only of one of the ``Blind15A_40`` visits. If you would like to use 
+    a different template, you must manually set this in the source code
     (``ap_pipe/python/lsst/ap/pipe/ap_pipe.py``, in the function ``runPipelineAlone``).
     This functionality will be improved when we switch from using a visit as a template to using coadds
     by default (see `DM-11422 <https://jira.lsstcorp.org/browse/DM-11422>`_).
 
-WRITE MORE HERE. THE RESULTS SECTION NEEDS UPDATING STILL.
+This will run all four steps of the pipeline in order. Each step will create a new subdirectory
+in ``output_dir``: one for ingested images, one for ingested calibration products, one for
+processed images, and one for difference imaging.
 
 
 .. _Results:
@@ -128,23 +134,25 @@ WRITE MORE HERE. THE RESULTS SECTION NEEDS UPDATING STILL.
 Results
 =======
 
-The final difference images and DIA Source catalogs for the test dataset are available 
-on the ``lsst-dev`` server at ``/project/mrawls/prototype_ap/diffim_15A38_g/deepDiff/v411033/``.
-A small thumbnail preview of the difference images is shown in :ref:`Figure 3<fig-diffim>`.
+The difference image and DIA Source catalog for a test image are available 
+on the ``lsst-dev`` server at ``/project/mrawls/prototype_ap/zomg7/diffim/deepDiff/v410985/``.
+A screenshot of the calibrated exposure (calexp) and difference image is shown 
+in :ref:`Figure 3<fig-diffim>`.
 
-Future work will extend this to more visits, perhaps using the 2014 visits as templates and the 2015
-visits as science. This Prototype Pipeline will be used as a core component of the `AP Minimum Viable System <https://confluence.lsstcorp.org/display/~ebellm/AP+Minimum+Viable+System>`_
-with a goal of verifying the different components of LSST image processing as we incrementally build toward
-a fully functional AP system.
-
-.. figure:: /_static/diffim_15A38_v411033.png
+.. figure:: /_static/diffim_v410985.png
    :name: fig-diffim
-   :alt: Difference images for a single DECam visit with all the CCDs
+   :alt: Calibrated exposure and difference image for DECam visit 410985, CCD 25
    
-   Difference images for HiTS field ``Blind15A_38`` with visit 410927 as the template
-   image and visit 411033 as the science image. CCDs 2 and 61 are nonoperational, and
-   a portion of CCD 31 is also not working. The other CCDs all perform as expected.
+   Calibrated science exposure (top) and difference image (bottom) for CCD 25 of HiTS field ``Blind15A_40``.
+   This example uses visit 410929 as the template image and visit 410985 as the science image.
 
+Future work will use coadded 2014 visits of the three HiTS fields described in Dataset 
+as templates and the corresponding 2015 visits as science.
+This pipeline is a core component of the 
+`AP Minimum Viable System <https://confluence.lsstcorp.org/display/~ebellm/AP+Minimum+Viable+System>`_
+with a goal of verifying the different components of LSST image processing as we build a 
+fully functional ``ap_verify`` system.
+The ``ap_pipe`` pipeline will also be available to users who wish to process any DECam dataset independently.
 
 .. _References:
 
