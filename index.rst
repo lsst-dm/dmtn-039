@@ -37,7 +37,8 @@ each of these steps and verify that the output is what we expect.
 
 To achieve this, there are two main python modules under development: 
 `ap_pipe <https://github.com/lsst-dm/ap_pipe>`_ and `ap_verify <https://github.com/lsst-dm/ap_verify>`_.
-The former is described here, and is used by the latter.
+The former, described here, is responsible for running the Prototype Pipeline. The latter
+uses ``ap_pipe`` to verify the output.
 
 
 .. _Dataset:
@@ -91,8 +92,8 @@ with the LSST Stack on a portion of the :ref:`Dataset <Dataset>` described above
 The prerequisites for running ``ap_pipe`` are:
 
 - The `LSST Science Pipelines <https://pipelines.lsst.io/install/lsstsw.html>`_ 
-  stack with the ``lsst_apps`` modules (a subset of ``lsst_distrib``)
-- The ``obs_decam`` and ``ap_pipe`` modules
+  stack with the ``lsst_apps`` packages (a subset of ``lsst_distrib``)
+- The ``obs_decam`` and ``ap_pipe`` packages
 - A clone of the ``ap_verify_hits2015`` dataset
 
 You may set all of this up as follows:
@@ -100,6 +101,8 @@ You may set all of this up as follows:
 .. prompt:: bash
 
    setup lsst_apps
+   # If using the lsst-dev server, lsst_apps may be setup using a centrally
+   # available weekly build, but the following packages are not included
    git clone https://github.com/lsst/obs_decam.git
    git clone https://github.com/lsst-dm/ap_pipe.git
    setup -k -r obs_decam
@@ -150,7 +153,8 @@ Future work will use coadded 2014 visits of the three HiTS fields described in D
 as templates and the corresponding 2015 visits as science.
 This pipeline is a core component of the 
 `AP Minimum Viable System <https://confluence.lsstcorp.org/display/~ebellm/AP+Minimum+Viable+System>`_
-with a goal of verifying the different components of LSST image processing as we build a 
+(note this link is private to LSST team members only).
+The goal is to run and verify each component of LSST image processing as we build a 
 fully functional ``ap_verify`` system.
 The ``ap_pipe`` pipeline will also be available to users who wish to process any DECam dataset independently.
 
