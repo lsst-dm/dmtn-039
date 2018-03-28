@@ -81,6 +81,12 @@ from the `NOAO Science Archive <http://archive.noao.edu/search/query>`_ by searc
 Tutorial
 ========
 
+.. warning::
+
+    The tutorial presented here is **not** up-to-date as of March 2018. ``ap_pipe`` and
+    related packages have changed significantly, and updated documentation will be
+    available as part of `DM-13164 <https://jira.lsstcorp.org/browse/DM-13164>`_.
+
 This tutorial walks a user through using ``ap_pipe`` to run four main processing steps 
 with the LSST Stack on a portion of the :ref:`Dataset <Dataset>` described above:
 
