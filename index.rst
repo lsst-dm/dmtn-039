@@ -13,7 +13,7 @@ Overview
 
 Ultimately, LSST Alert Production (AP) will need to perform all steps of the Level 1
 pipeline automatically on each new raw image from the telescope. Details
-are in the LSST Data Management Science Pipelines Design  (LDM-151 :cite:`LDM-151`) and 
+are in the LSST Data Management Science Pipelines Design  (LDM-151 :cite:`LDM-151`) and
 the LSST Data Products Definition Document (DPDD :cite:`LSE-163`). Briefly
 summarized below and in :ref:`Figure 1<fig-nightly-proc>`, the first portion of these steps are:
 
@@ -25,17 +25,17 @@ summarized below and in :ref:`Figure 1<fig-nightly-proc>`, the first portion of 
 .. figure:: /_static/nightly_processing_1.png
    :name: fig-nightly-proc
    :alt: First portion of the LDM-151 Nightly Overview flowchart, from ISR to Image Differencing
-   
-   The first portion of the Nightly Processing Pipeline overview, from Figure 1 of 
+
+   The first portion of the Nightly Processing Pipeline overview, from Figure 1 of
    :cite:`LDM-151`. This encompasses all of "Single Frame Processing" and part of "Alert Detection."
 
 A number of packages in the LSST Software Stack have been developed to perform
 portions of one or more of these four tasks, but they are not yet linked together
 in an automated way. This Prototype AP Pipeline is the first step toward the goal
-of an automatic Level 1 Pipeline that can process a set of raw images through 
+of an automatic Level 1 Pipeline that can process a set of raw images through
 each of these steps and verify that the output is what we expect.
 
-To achieve this, there are two main python modules under development: 
+To achieve this, there are two main python modules under development:
 `ap_pipe <https://github.com/lsst-dm/ap_pipe>`_ and `ap_verify <https://github.com/lsst-dm/ap_verify>`_.
 The former, described here, is responsible for running the Prototype Pipeline. The latter
 uses ``ap_pipe`` to verify the output.
@@ -46,7 +46,7 @@ uses ``ap_pipe`` to verify the output.
 Dataset
 =======
 
-We use images from the High Cadence Transient Survey (HiTS) :cite:`for16`, a three-year survey 
+We use images from the High Cadence Transient Survey (HiTS) :cite:`for16`, a three-year survey
 from 2013--2015 which used the `Dark Energy Camera (DECam) <http://www.ctio.noao.edu/noao/content/DECam-What>`_
 on the 4 m Blanco telescope at Cerro Tololo Interamerican Observatory (CTIO).
 The primary science goal of this survey is to detect and follow up optical transients
@@ -56,7 +56,7 @@ The distribution of the HiTS survey fields in the sky is shown in :ref:`Figure 2
 .. figure:: /_static/forster_fig4.png
    :name: fig-hits
    :alt: Distribution of the HiTS survey fields in the sky, color-coded by year
-   
+
    Spatial distribution of the fields observed in the 2013--2015 HiTS campaign (Figure 4 from :cite:`for16`).
    The fields selected for this dataset are three of the pink ones, which indicate they were visited in both 2014 and 2015.
    Specifically, they are the pair of partially-overlapping pink fields near the bottom center of the 2014 and 2015
@@ -64,7 +64,7 @@ The distribution of the HiTS survey fields in the sky is shown in :ref:`Figure 2
 
 We select HiTS fields ``Blind15A_26``, ``Blind15A_40``, and ``Blind15A_42``, which
 are repeat observations of the same region of sky as ``Blind14A_04``, ``Blind14A_10``, and ``Blind14A_09``
-fields, respectively. Each field has 34--36 individual visits over about a month, and each DECam image 
+fields, respectively. Each field has 34--36 individual visits over about a month, and each DECam image
 consists of 62 CCDs (however, two of these are non-functional).
 Most of the visits are in the *g*-band, some are in the *r*-band, and a few are in *i*.
 
@@ -72,7 +72,7 @@ All of these data are in the git-lfs repo `ap_verify_hits2015 <https://github.co
 in raw format, along with the corresponding DECam Master Calibration files and camera defect files.
 The data also exist on the ``lsst-dev`` server at ``/datasets/decam/_internal/raw/hits`` with the
 calibration files at ``/dataset/decam/_internal/calib/cpHits`` and the camera defects at
-``/dataset/decam/_internal/calib/bpmDes``. The raw images and calibration files were originally obtained 
+``/dataset/decam/_internal/calib/bpmDes``. The raw images and calibration files were originally obtained
 from the `NOAO Science Archive <http://archive.noao.edu/search/query>`_ by searching for PI Förster.
 
 
@@ -87,7 +87,7 @@ Tutorial
     related packages have changed significantly, and updated documentation will be
     available as part of `DM-13164 <https://jira.lsstcorp.org/browse/DM-13164>`_.
 
-This tutorial walks a user through using ``ap_pipe`` to run four main processing steps 
+This tutorial walks a user through using ``ap_pipe`` to run four main processing steps
 with the LSST Stack on a portion of the :ref:`Dataset <Dataset>` described above:
 
 1. ``ingestImagesDecam.py``, from the ``obs_decam`` package but drawing heavily on ``pipe_tasks``,
@@ -97,7 +97,7 @@ with the LSST Stack on a portion of the :ref:`Dataset <Dataset>` described above
 
 The prerequisites for running ``ap_pipe`` are:
 
-- The `LSST Science Pipelines <https://pipelines.lsst.io/install/lsstsw.html>`_ 
+- The `LSST Science Pipelines <https://pipelines.lsst.io/install/lsstsw.html>`_
   stack with the ``lsst_apps`` packages (a subset of ``lsst_distrib``)
 - The ``obs_decam`` and ``ap_pipe`` packages
 - A clone of the ``ap_verify_hits2015`` dataset
@@ -120,14 +120,14 @@ with the ``-d`` flag, a desired output location on disk with the ``-o`` flag, an
 a valid visit and ccdnum dataId string with the ``-i`` flag.
 
 .. prompt:: bash
-   
+
    python ap_pipe/bin.src/ap_pipe.py -d ap_verify_hits2015/ -o output_dir -i "visit=410985 ccdnum=25"
 
 .. note::
 
-    At present (`DM-11390 <https://jira.lsstcorp.org/browse/DM-11390>`_), the template used for 
+    At present (`DM-11390 <https://jira.lsstcorp.org/browse/DM-11390>`_), the template used for
     difference imaging is hard-wired to visit 410929 and ccdnum 25.
-    This is a single CCD only of one of the ``Blind15A_40`` visits. If you would like to use 
+    This is a single CCD only of one of the ``Blind15A_40`` visits. If you would like to use
     a different template, you must manually set this in the source code
     (``ap_pipe/python/lsst/ap/pipe/ap_pipe.py``, in the function ``runPipelineAlone``).
     This functionality will be improved when we switch from using a visit as a template to using coadds
@@ -143,24 +143,24 @@ processed images, and one for difference imaging.
 Results
 =======
 
-The difference image and DIA Source catalog for a test image are available 
+The difference image and DIA Source catalog for a test image are available
 on the ``lsst-dev`` server at ``/project/mrawls/prototype_ap/zomg7/diffim/deepDiff/v410985/``.
-A screenshot of the calibrated exposure (calexp) and difference image is shown 
+A screenshot of the calibrated exposure (calexp) and difference image is shown
 in :ref:`Figure 3<fig-diffim>`.
 
 .. figure:: /_static/diffim_v410985.png
    :name: fig-diffim
    :alt: Calibrated exposure and difference image for DECam visit 410985, CCD 25
-   
+
    Calibrated science exposure (top) and difference image (bottom) for CCD 25 of HiTS field ``Blind15A_40``.
    This example uses visit 410929 as the template image and visit 410985 as the science image.
 
-Future work will use coadded 2014 visits of the three HiTS fields described in Dataset 
+Future work will use coadded 2014 visits of the three HiTS fields described in Dataset
 as templates and the corresponding 2015 visits as science.
-This pipeline is a core component of the 
+This pipeline is a core component of the
 `AP Minimum Viable System <https://confluence.lsstcorp.org/display/~ebellm/AP+Minimum+Viable+System>`_
 (note this link is private to LSST team members only).
-The goal is to run and verify each component of LSST image processing as we build a 
+The goal is to run and verify each component of LSST image processing as we build a
 fully functional ``ap_verify`` system.
 The ``ap_pipe`` pipeline will also be available to users who wish to process any DECam dataset independently.
 
