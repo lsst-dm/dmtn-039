@@ -173,6 +173,5 @@ References
 ==========
 
 .. bibliography:: local.bib
-   :encoding: latex+latin
    :style: lsst_aa
 
